@@ -43,7 +43,7 @@ def getLocationNames(html_content):
       aref.replaceWith('')
 
     # ftfy.fix_text() is used in order to prevent mojibake
-    # since certain road have names have special characters
+    # since certain road names have special characters
     loc.append(fix_text(div.text))
 
   return loc
@@ -62,13 +62,13 @@ def getRoadStatus(html_content):
 
     # the Update time of the traffic info contains the following
     # string: "Updated: 12:59 pm (last 5 seconds ago)"
-    # In this procedure, we remove the "(last n times ago)"
+    # In this line, we remove the "(last n times ago)"
     # strings.
     info[-1]   = info[-1].split('(')[0]
   
     # Since the div column of the northbound and southbound
     # information are ordered, we employ a simple modulo
-    # trick to determine which line is southband and northbound
+    # trick to determine which line is southbound and northbound
     #   * northbound - if the order is divisible by 2
     #   * southbound - if the order is not divisible by 2
     if((dir_selector % 2) == 0):
@@ -112,22 +112,22 @@ def aggregateData(location, sbstats, nbstats):
 
 def webscrap(webinfo):
   # Get html content and start BeautifulSoup instance
-  response          = rq.get(webinfo['url'])
-  html_content      = BeautifulSoup(response.content)
+  response     = rq.get(webinfo['url'])
+  html_content = BeautifulSoup(response.content)
  
   # get region and road names
-  location          = getLocationNames(html_content)
-  boundary          = location[0]
-  location          = location[1:]
+  location     = getLocationNames(html_content)
+  boundary     = location[0]
+  location     = location[1:]
 
   # get the road status and combine the data
-  stats             = getRoadStatus(html_content)
-  road_status       = aggregateData(location, stats['sb'], stats['nb'])
+  stats        = getRoadStatus(html_content)
+  road_status  = aggregateData(location, stats['sb'], stats['nb'])
   
   # initial time format for the update time is
   # ex: "Updated: 12:14 pm"
   # we remove the "Updated:" string and isolate the time.
-  updated           = sub(' ', '',(stats['sb'][0][-1]).split('d:')[-1])
+  updated      = sub(' ', '',(stats['sb'][0][-1]).split('d:')[-1])
 
   # return the following dictionary, up to the user to insert to various db's
   # (ex. MongoDB, MySQL, PostgreSQL)
