@@ -61,7 +61,7 @@ def getRoadStatus(html_content):
     info       = filter(None, info_raw)[1:]
 
     # the Update time of the traffic info contains the following
-    # string: "Updated: 12:59 pm (last 5 seconds ago)"
+    # string: "Updated: 12:59 pm (last 5 seconds ago)" 
     # In this line, we remove the "(last n times ago)"
     # strings.
     info[-1]   = info[-1].split('(')[0]
